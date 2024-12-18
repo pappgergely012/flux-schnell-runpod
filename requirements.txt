@@ -4,4 +4,6 @@ invisible_watermark
 transformers==4.42.4
 xformers
 gradio
+protobuf
+torch==2.1
 sentencepiece
