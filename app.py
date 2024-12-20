@@ -23,29 +23,26 @@ def infer(
     num_samples=3, 
     progress=gr.Progress(track_tqdm=True)
 ):
-    images = []
-    seeds_used = []
+    current_seed = seed
 
-    for i in range(num_samples):
-        current_seed = seed
-        if randomize_seed:
-            current_seed = random.randint(0, MAX_SEED)
-        generator = torch.Generator().manual_seed(current_seed)
-        
-        image = pipe(
-            prompt=prompt,
-            width=width,
-            height=height,
-            num_inference_steps=num_inference_steps,
-            generator=generator,
-            guidance_scale=0.0
-        ).images[0]
+    if randomize_seed:
+        current_seed = random.randint(0, MAX_SEED)
 
-        images.append(image)
-        seeds_used.append(current_seed)
+    generator = torch.Generator().manual_seed(current_seed)
     
-    # Return a gallery of images and a string listing the used seeds
-    return images, ", ".join(str(s) for s in seeds_used)
+    images = pipe(
+        prompt=prompt,
+        width=width,
+        height=height,
+        num_inference_steps=num_inference_steps,
+        generator=generator,
+        guidance_scale=0.0,
+        num_images_per_prompt=num_samples or 1
+    ).images
+
+    
+    # Return an array of images
+    return images
 
 examples = [
     "a tiny astronaut hatching from an egg on the moon",
