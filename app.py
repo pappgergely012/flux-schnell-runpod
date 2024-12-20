@@ -23,6 +23,8 @@ def infer(
     num_samples=3, 
     progress=gr.Progress(track_tqdm=True)
 ):
+    torch.cuda.empty_cache()
+
     current_seed = seed
 
     if randomize_seed:
@@ -40,7 +42,7 @@ def infer(
         num_images_per_prompt=num_samples or 1
     ).images
 
-    
+    print("images", images)
     # Return an array of images
     return images
 
