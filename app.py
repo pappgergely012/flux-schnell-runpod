@@ -78,7 +78,7 @@ with gr.Blocks(css=css) as demo:
         
         # Corrected Gallery component: No .style(), use "columns" directly
         result_gallery = gr.Gallery(label="Results", columns=[4], height="auto")
-        seeds_text = gr.Text(label="Seeds Used", interactive=False)
+        # seeds_text = gr.Text(label="Seeds Used", interactive=False)
 
         with gr.Accordion("Advanced Settings", open=False):
             seed = gr.Slider(
@@ -128,7 +128,7 @@ with gr.Blocks(css=css) as demo:
             examples=examples,
             fn=infer,
             inputs=[prompt],
-            outputs=[result_gallery, seeds_text],
+            outputs=[result_gallery],
             cache_examples="lazy"
         )
 
@@ -136,12 +136,12 @@ with gr.Blocks(css=css) as demo:
     run_button.click(
         fn=infer,
         inputs=[prompt, seed, randomize_seed, width, height, num_inference_steps, num_samples],
-        outputs=[result_gallery, seeds_text]
+        outputs=[result_gallery]
     )
     prompt.submit(
         fn=infer,
         inputs=[prompt, seed, randomize_seed, width, height, num_inference_steps, num_samples],
-        outputs=[result_gallery, seeds_text]
+        outputs=[result_gallery]
     )
 
 demo.launch(share=True)
